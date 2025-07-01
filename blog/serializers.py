@@ -17,10 +17,12 @@ class AuthorSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'bio', 'avatar']
 
 class ArticleSerializer(serializers.ModelSerializer):
-    category = CategorySerializer(read_only=True)
-    tags = TagSerializer(many=True, read_only=True)
-    author = AuthorSerializer(read_only=True)
-
     class Meta:
         model = Article
-        fields = ['id', 'title', 'content', 'published_at', 'category', 'tags', 'author']                        
+        fields = [
+            'id', 'title', 'content', 'published_at',
+            'category',  # Accepts category ID
+            'tags',      # Accepts list of tag IDs
+            'author'     # Read-only if you want
+        ]
+        read_only_fields = ['author']  # Optional: don't allow changing author here
