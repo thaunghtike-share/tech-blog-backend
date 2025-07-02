@@ -57,7 +57,8 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [ 
-    "http://localhost:3000",  # React app running on localhost
+    "http://localhost:3001", 
+    "http://localhost:3000" # React app running on localhost
 ]   
 
 ROOT_URLCONF = 'blogapis.urls'
