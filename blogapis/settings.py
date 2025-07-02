@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'blog',  # my blog application
+    'corsheaders',  # for handling CORS
 ]
 
 MIDDLEWARE = [
@@ -49,7 +50,13 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',  # CORS middleware
+    'django.middleware.common.CommonMiddleware',  # Ensure this is after CorsMiddleware
 ]
+
+CORS_ALLOWED_ORIGINS = [ 
+    "http://localhost:3000",  # React app running on localhost
+]   
 
 ROOT_URLCONF = 'blogapis.urls'
 

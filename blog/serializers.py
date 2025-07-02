@@ -25,4 +25,3 @@ class ArticleSerializer(serializers.ModelSerializer):
             'tags',      # Accepts list of tag IDs
             'author'     # Read-only if you want
         ]
-        read_only_fields = ['author']  # Optional: don't allow changing author here
