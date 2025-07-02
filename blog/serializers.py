@@ -23,5 +23,6 @@ class ArticleSerializer(serializers.ModelSerializer):
             'id', 'title', 'content', 'published_at',
             'category',  # Accepts category ID
             'tags',      # Accepts list of tag IDs
-            'author'     # Read-only if you want
+            'author',    # Read-only if you want
+            'featured'
         ]

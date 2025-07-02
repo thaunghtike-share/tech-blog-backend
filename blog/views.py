@@ -1,6 +1,8 @@
 from rest_framework import generics, permissions
+from rest_framework.filters import SearchFilter
 from .models import Category, Tag, Author, Article
 from .serializers import CategorySerializer, TagSerializer, AuthorSerializer, ArticleSerializer
+from django_filters.rest_framework import DjangoFilterBackend
 
 class CategoryListCreateAPIView(generics.ListCreateAPIView):
     queryset = Category.objects.all()
@@ -36,8 +38,11 @@ class AuthorRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'id'
 
 class ArticleListCreateAPIView(generics.ListCreateAPIView):
-    queryset = Article.objects.all()
+    queryset = Article.objects.all().order_by('-published_at')
     serializer_class = ArticleSerializer
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    filterset_fields = ['category', 'author', 'tags', 'featured']
+    search_fields = ['title', 'content']
     permission_classes = [permissions.AllowAny]  # only admin can create
 
 class ArticleRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
