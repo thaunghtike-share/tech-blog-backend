@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django_filters',  # for filtering in DRF
     'blog',  # my blog application
     'corsheaders',  # for handling CORS
+    'drf_yasg',  # for async support in DRF
 ]
 
 MIDDLEWARE = [
