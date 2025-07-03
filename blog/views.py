@@ -30,9 +30,17 @@ class TagRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'id'
 
 class AuthorListCreateAPIView(generics.ListCreateAPIView):
-    queryset = Author.objects.all()
     serializer_class = AuthorSerializer
-    permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self):
+        queryset = Author.objects.all()
+        featured = self.request.query_params.get('featured')
+        if featured is not None:
+            if featured.lower() in ['true', '1', 'yes']:
+                queryset = queryset.filter(featured=True)
+            elif featured.lower() in ['false', '0', 'no']:
+                queryset = queryset.filter(featured=False)
+        return queryset
 
 class AuthorRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Author.objects.all()
