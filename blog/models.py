@@ -22,6 +22,7 @@ class Author(models.Model):
     featured = models.BooleanField(default=False)  
     job_title = models.CharField(max_length=100, blank=True)
     company = models.CharField(max_length=100, blank=True)
+    linkedin = models.URLField(blank=True)  # New field for LinkedIn URL
 
     def __str__(self):
         return self.name      

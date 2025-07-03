@@ -22,6 +22,7 @@ class AuthorSerializer(serializers.ModelSerializer):
             'featured',
             'job_title',
             'company',
+            'linkedin'  # New field for LinkedIn URL
         ]
 
 class ArticleSerializer(serializers.ModelSerializer):
