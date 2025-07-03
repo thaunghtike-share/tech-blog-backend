@@ -20,7 +20,9 @@ class Author(models.Model):
     bio = models.TextField(blank=True)
     avatar = models.URLField(blank=True)
     featured = models.BooleanField(default=False)  
-    
+    job_title = models.CharField(max_length=100, blank=True)
+    company = models.CharField(max_length=100, blank=True)
+
     def __str__(self):
         return self.name      
 

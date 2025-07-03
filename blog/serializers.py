@@ -14,7 +14,15 @@ class TagSerializer(serializers.ModelSerializer):
 class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Author
-        fields = ['id', 'name', 'bio', 'avatar', 'featured']
+        fields = [
+            'id',
+            'name',
+            'bio',
+            'avatar',
+            'featured',
+            'job_title',
+            'company',
+        ]
 
 class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
