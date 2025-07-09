@@ -7,6 +7,8 @@ from rest_framework.views import APIView
 from django.db.models import Count
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser, MultiPartParser, FormParser
+from rest_framework.permissions import BasePermission
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 class CategoryListCreateAPIView(generics.ListCreateAPIView):
     queryset = Category.objects.all()
@@ -98,9 +100,20 @@ class CategoryStatsAPIView(APIView):
 
 class CommentListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = CommentSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
         return Comment.objects.filter(article_id=self.kwargs["article_id"], parent=None).order_by('-created_at')
 
     def perform_create(self, serializer):
         serializer.save(article_id=self.kwargs["article_id"])
+
+
+class IsCommentAuthor(BasePermission):
+    def has_object_permission(self, request, view, obj):
+        return obj.user == request.user
+
+class CommentRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsCommentAuthor] 

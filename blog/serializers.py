@@ -35,14 +35,14 @@ class ArticleSerializer(serializers.ModelSerializer):
             'author',    # Read-only if you want
             'featured'
         ]
-
+        
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-        fields = ['id', 'article', 'parent', 'name', 'content', 'rating', 'image', 'created_at']
+        fields = ['id', 'article', 'parent', 'content', 'rating', 'image', 'created_at']
         read_only_fields = ['id', 'created_at', 'article']
 
-    def validate(self, attrs):
-        if not attrs.get('name'):
-            attrs['name'] = 'Anonymous'
-        return attrs
+    def create(self, validated_data):
+        validated_data['user'] = self.context['request'].user
+        return super().create(validated_data)
+
