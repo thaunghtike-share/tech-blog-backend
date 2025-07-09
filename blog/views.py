@@ -6,6 +6,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.views import APIView
 from django.db.models import Count
 from rest_framework.response import Response
+from rest_framework.parsers import JSONParser, MultiPartParser, FormParser
 
 class CategoryListCreateAPIView(generics.ListCreateAPIView):
     queryset = Category.objects.all()
@@ -99,9 +100,7 @@ class CommentListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = CommentSerializer
 
     def get_queryset(self):
-        article_id = self.kwargs['article_id']
-        return Comment.objects.filter(article_id=article_id).order_by('-created_at')
+        return Comment.objects.filter(article_id=self.kwargs["article_id"], parent=None).order_by('-created_at')
 
     def perform_create(self, serializer):
-        article_id = self.kwargs['article_id']
-        serializer.save(article_id=article_id)
+        serializer.save(article_id=self.kwargs["article_id"])

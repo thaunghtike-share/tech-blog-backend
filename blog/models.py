@@ -44,10 +44,13 @@ class Article(models.Model):
 
 # comments        
 class Comment(models.Model):
-    article = models.ForeignKey(Article, on_delete=models.CASCADE)
-    name = models.CharField(max_length=100, blank=True)  # allow blank
+    article = models.ForeignKey("Article", on_delete=models.CASCADE, related_name="comments")
+    parent = models.ForeignKey("self", null=True, blank=True, on_delete=models.CASCADE, related_name="replies")
+    name = models.CharField(max_length=100)
     content = models.TextField()
+    rating = models.PositiveSmallIntegerField(null=True, blank=True)  # 1 to 5 stars
+    image = models.ImageField(upload_to="comment_images/", null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Comment by {self.name} on {self.article.title}"   
+        return f"Comment by {self.name} on article {self.article_id}"

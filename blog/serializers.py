@@ -39,11 +39,10 @@ class ArticleSerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-        fields = ['id', 'name', 'content', 'created_at']
-        read_only_fields = ['id', 'created_at']
+        fields = ['id', 'article', 'parent', 'name', 'content', 'rating', 'image', 'created_at']
+        read_only_fields = ['id', 'created_at', 'article']
 
     def validate(self, attrs):
-        # Set a default name if missing
         if not attrs.get('name'):
             attrs['name'] = 'Anonymous'
         return attrs
