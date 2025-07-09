@@ -16,10 +16,4 @@ urlpatterns = [
     path('articles/', ArticleListCreateAPIView.as_view(), name='article-create'),
     path('articles/<int:id>/', ArticleRetrieveUpdateDestroyAPIView.as_view(), name='article-detail'),
     path('articles/stats/', ArticleStatsAPIView.as_view(), name='article-stats'),
-
-    path('articles/<int:article_id>/comments/', CommentListCreateAPIView.as_view(), name='article-comments'),
-    path('comments/<int:pk>/', CommentRetrieveUpdateDestroyAPIView.as_view(), name='comment-detail'),
-
-    # ✅ Add token login endpoint
-    path('auth/login/', obtain_auth_token, name='api-token-auth'),
 ]
