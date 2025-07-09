@@ -15,4 +15,5 @@ urlpatterns = [
     path('articles/', ArticleListCreateAPIView.as_view(), name='article-create'),
     path('articles/<int:id>/', ArticleRetrieveUpdateDestroyAPIView.as_view(), name='article-detail'),
     path('articles/stats/', ArticleStatsAPIView.as_view(), name='article-stats'),
+    path('articles/<int:article_id>/comments/', CommentListCreateAPIView.as_view(), name='article-comments'),
 ]

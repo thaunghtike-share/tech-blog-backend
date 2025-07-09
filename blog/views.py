@@ -1,7 +1,7 @@
 from rest_framework import generics, permissions, status
 from rest_framework.filters import SearchFilter
-from .models import Category, Tag, Author, Article
-from .serializers import CategorySerializer, TagSerializer, AuthorSerializer, ArticleSerializer
+from .models import Category, Tag, Author, Article, Comment
+from .serializers import CategorySerializer, TagSerializer, AuthorSerializer, ArticleSerializer, CommentSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.views import APIView
 from django.db.models import Count
@@ -95,3 +95,13 @@ class CategoryStatsAPIView(APIView):
             }
         })          
 
+class CommentListCreateAPIView(generics.ListCreateAPIView):
+    serializer_class = CommentSerializer
+
+    def get_queryset(self):
+        article_id = self.kwargs['article_id']
+        return Comment.objects.filter(article_id=article_id).order_by('-created_at')
+
+    def perform_create(self, serializer):
+        article_id = self.kwargs['article_id']
+        serializer.save(article_id=article_id)

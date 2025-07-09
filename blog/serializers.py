@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, Tag, Author, Article
+from .models import Category, Tag, Author, Article, Comment
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -35,3 +35,15 @@ class ArticleSerializer(serializers.ModelSerializer):
             'author',    # Read-only if you want
             'featured'
         ]
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ['id', 'name', 'content', 'created_at']
+        read_only_fields = ['id', 'created_at']
+
+    def validate(self, attrs):
+        # Set a default name if missing
+        if not attrs.get('name'):
+            attrs['name'] = 'Anonymous'
+        return attrs
