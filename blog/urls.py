@@ -16,4 +16,6 @@ urlpatterns = [
     path('articles/', ArticleListCreateAPIView.as_view(), name='article-create'),
     path('articles/<int:id>/', ArticleRetrieveUpdateDestroyAPIView.as_view(), name='article-detail'),
     path('articles/stats/', ArticleStatsAPIView.as_view(), name='article-stats'),
+
+    path('login/', obtain_auth_token, name='api_token_auth'),
 ]

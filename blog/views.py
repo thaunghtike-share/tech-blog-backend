@@ -6,7 +6,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.views import APIView
 from django.db.models import Count
 from rest_framework.response import Response
-from rest_framework.parsers import JSONParser, MultiPartParser, FormParser
+from rest_framework.exceptions import ValidationError
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 class CategoryListCreateAPIView(generics.ListCreateAPIView):
     queryset = Category.objects.all()
@@ -32,6 +33,7 @@ class TagRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
 
 class AuthorListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = AuthorSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]  # ✅ Require login
 
     def get_queryset(self):
         queryset = Author.objects.all()
@@ -55,7 +57,15 @@ class ArticleListCreateAPIView(generics.ListCreateAPIView):
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_fields = ['category', 'author', 'tags', 'featured']
     search_fields = ['title', 'content']
-    permission_classes = [permissions.AllowAny]  # only admin can create
+    permission_classes = [IsAuthenticatedOrReadOnly]  # ✅ Require login
+
+    def perform_create(self, serializer):
+        try:
+            author = self.request.user.author_profile  # ✅ Get linked author
+        except Author.DoesNotExist:
+            raise ValidationError("You are not linked to an Author profile.")
+
+        serializer.save(author=author)
 
 class ArticleRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Article.objects.all()

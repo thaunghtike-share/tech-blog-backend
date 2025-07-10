@@ -35,3 +35,4 @@ class ArticleSerializer(serializers.ModelSerializer):
             'author',    # Read-only if you want
             'featured'
         ]
+        read_only_fields = ['author']

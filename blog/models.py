@@ -17,30 +17,27 @@ class Tag(models.Model):
     def __str__(self):
         return self.name   
 
-# create author model
 class Author(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="author_profile")
     name = models.CharField(max_length=100)
     bio = models.TextField(blank=True)
     avatar = models.URLField(blank=True)
-    featured = models.BooleanField(default=False)  
+    featured = models.BooleanField(default=False)
     job_title = models.CharField(max_length=100, blank=True)
     company = models.CharField(max_length=100, blank=True)
-    linkedin = models.URLField(blank=True)  # New field for LinkedIn URL
+    linkedin = models.URLField(blank=True)
 
     def __str__(self):
-        return self.name    
-          
+        return self.name
 
-# create article model
 class Article(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField()
     published_at = models.DateTimeField(auto_now_add=True)
     featured = models.BooleanField(default=False)
-
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     tags = models.ManyToManyField(Tag, blank=True)
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.title    
+        return self.title   
