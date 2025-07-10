@@ -18,4 +18,5 @@ urlpatterns = [
     path('articles/stats/', ArticleStatsAPIView.as_view(), name='article-stats'),
 
     path('login/', obtain_auth_token, name='api_token_auth'),
+    path('mmplaylists/', MMPlaylistListView.as_view(), name="mmplaylist-list"),
 ]

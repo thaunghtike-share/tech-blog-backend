@@ -41,3 +41,15 @@ class Article(models.Model):
 
     def __str__(self):
         return self.title   
+
+# models.py
+
+class MMPlaylist(models.Model):
+    title = models.CharField(max_length=255)
+    video_id = models.CharField(max_length=32)
+    playlist_url = models.URLField()
+    duration = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.title
+

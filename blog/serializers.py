@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, Tag, Author, Article
+from .models import Category, Tag, Author, Article, MMPlaylist
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -10,6 +10,11 @@ class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
         fields = ['id', 'name']
+
+class MMPlaylistSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MMPlaylist
+        fields = '__all__'
 
 class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
