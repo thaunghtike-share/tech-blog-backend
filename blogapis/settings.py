@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-279$wsci6jr_3&8yg143(5t80op^%*yq8(*y)wsawrpy$j=r-=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.131', '192.168.100.7','localhost']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',  # CORS middleware'
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -52,13 +53,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',  # CORS middleware
     'django.middleware.common.CommonMiddleware',  # Ensure this is after CorsMiddleware
 ]
 
 CORS_ALLOWED_ORIGINS = [ 
     "http://localhost:3001", 
-    "http://localhost:3000" # React app running on localhost
+    "http://localhost:3000",
+    "http://192.168.1.131:3000",
+    "http://192.168.1.131:3001", # React app running on localhost
 ]   
 
 ROOT_URLCONF = 'blogapis.urls'
@@ -137,6 +139,7 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10,
 }
 
+CORS_ALLOW_ALL_ORIGINS = True
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
