@@ -70,5 +70,25 @@ class Playlist(models.Model):
     duration = models.CharField(max_length=50, blank=True)  # Estimated duration like "3-5 weeks"
 
     def __str__(self):
+        return self.title   
+
+class Project(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    url = models.URLField()
+    tags = models.JSONField(default=list)  # stores list of tags
+
+    def __str__(self):
+        return self.name     
+
+class UdemyCourse(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.TextField(blank=True)
+    url = models.URLField()
+    author = models.CharField(max_length=255)
+    rating = models.FloatField(blank=True, null=True)
+    author_image = models.URLField(blank=True, null=True)
+
+    def __str__(self):
         return self.title             
 

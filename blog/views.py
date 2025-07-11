@@ -1,7 +1,7 @@
 from rest_framework import generics, permissions, status
 from rest_framework.filters import SearchFilter
-from .models import Category, Tag, Author, Article, MMPlaylist, FreeLab, Playlist
-from .serializers import CategorySerializer, TagSerializer, AuthorSerializer, ArticleSerializer, MMPlaylistSerializer, FreeLabSerializer, PlaylistSerializer
+from .models import Category, Tag, Author, Article, MMPlaylist, FreeLab, Playlist, Project, UdemyCourse
+from .serializers import CategorySerializer, TagSerializer, AuthorSerializer, ArticleSerializer, MMPlaylistSerializer, FreeLabSerializer, PlaylistSerializer, ProjectSerializer, UdemyCourseSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.views import APIView
 from django.db.models import Count
@@ -119,4 +119,15 @@ class FreeLabListAPIView(generics.ListAPIView):
 class PlaylistListView(generics.ListAPIView):
     queryset = Playlist.objects.all()
     serializer_class = PlaylistSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]     
+    permission_classes = [IsAuthenticatedOrReadOnly]  
+
+
+class ProjectListAPIView(generics.ListAPIView):
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer       
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+class UdemyCourseList(generics.ListAPIView):
+    queryset = UdemyCourse.objects.all()
+    serializer_class = UdemyCourseSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]

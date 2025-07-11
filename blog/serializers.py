@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, Tag, Author, Article, MMPlaylist, FreeLab, Playlist
+from .models import Category, Tag, Author, Article, MMPlaylist, FreeLab, Playlist, Project, UdemyCourse
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -58,4 +58,14 @@ class PlaylistSerializer(serializers.ModelSerializer):
             "channel",
             "difficulty",
             "duration",
-        ]          
+        ]   
+
+class ProjectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Project
+        fields = ['id', 'name', 'description', 'url', 'tags']     
+
+class UdemyCourseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UdemyCourse
+        fields = ['id', 'title', 'description', 'url', 'author', 'author_image', 'rating']          

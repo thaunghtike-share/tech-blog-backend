@@ -21,4 +21,6 @@ urlpatterns = [
     path('mmplaylists/', MMPlaylistListView.as_view(), name="mmplaylist-list"),
     path('freelabs/', FreeLabListAPIView.as_view(), name="freelab-list"),
     path('playlists/', PlaylistListView.as_view(), name='playlist-list'),
+    path('projects/', ProjectListAPIView.as_view(), name='project-list'),
+    path('udemy-courses/', UdemyCourseList.as_view(), name='udemy-course-list'),
 ]
