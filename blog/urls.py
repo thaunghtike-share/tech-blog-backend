@@ -19,4 +19,6 @@ urlpatterns = [
 
     path('login/', obtain_auth_token, name='api_token_auth'),
     path('mmplaylists/', MMPlaylistListView.as_view(), name="mmplaylist-list"),
+    path('freelabs/', FreeLabListAPIView.as_view(), name="freelab-list"),
+    path('playlists/', PlaylistListView.as_view(), name='playlist-list'),
 ]

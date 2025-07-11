@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, Tag, Author, Article, MMPlaylist
+from .models import Category, Tag, Author, Article, MMPlaylist, FreeLab, Playlist
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -41,3 +41,21 @@ class ArticleSerializer(serializers.ModelSerializer):
             'featured'
         ]
         read_only_fields = ['author']
+
+class FreeLabSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FreeLab
+        fields = '__all__'      
+
+class PlaylistSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Playlist
+        fields = [
+            "id",
+            "title",
+            "video_id",
+            "playlist_url",
+            "channel",
+            "difficulty",
+            "duration",
+        ]          
