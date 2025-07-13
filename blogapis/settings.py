@@ -61,7 +61,9 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3001", 
     "http://localhost:3000",
     "http://192.168.1.131:3000",
-    "http://192.168.1.131:3001", # React app running on localhost
+    "http://192.168.1.131:3001",
+    "http://172.20.10.6:3000",
+    "http://172.20.10.6:3001" # React app running on localhost
 ]   
 
 ROOT_URLCONF = 'blogapis.urls'
