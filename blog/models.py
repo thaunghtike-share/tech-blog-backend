@@ -39,6 +39,12 @@ class Article(models.Model):
     tags = models.ManyToManyField(Tag, blank=True)
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
 
+    read_count = models.PositiveIntegerField(default=0)
+
+    def increment_read_count(self):
+        self.read_count += 1
+        self.save(update_fields=["read_count"])
+
     def __str__(self):
         return self.title   
 

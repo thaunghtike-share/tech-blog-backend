@@ -39,9 +39,17 @@ class ArticleSerializer(serializers.ModelSerializer):
             'category',  # Accepts category ID
             'tags',      # Accepts list of tag IDs
             'author',    # Read-only if you want
-            'featured'
+            'featured',
+            'read_count'
         ]
         read_only_fields = ['author']
+
+class ArticleTopReadSerializer(serializers.ModelSerializer):
+    author_name = serializers.CharField(source="author.name", default="Unknown", read_only=True)
+
+    class Meta:
+        model = Article
+        fields = ["id", "title", "published_at", "author_name", "read_count"]        
 
 class FreeLabSerializer(serializers.ModelSerializer):
     class Meta:

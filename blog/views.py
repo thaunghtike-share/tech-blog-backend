@@ -1,13 +1,14 @@
 from rest_framework import generics, permissions, status
 from rest_framework.filters import SearchFilter
 from .models import Category, Tag, Author, Article, MMPlaylist, FreeLab, Playlist, Project, UdemyCourse
-from .serializers import CategorySerializer, TagSerializer, AuthorSerializer, ArticleSerializer, MMPlaylistSerializer, FreeLabSerializer, PlaylistSerializer, ProjectSerializer, UdemyCourseSerializer
+from .serializers import CategorySerializer, TagSerializer, AuthorSerializer, ArticleSerializer, MMPlaylistSerializer, ArticleTopReadSerializer, FreeLabSerializer, PlaylistSerializer, ProjectSerializer, UdemyCourseSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.views import APIView
 from django.db.models import Count
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny
+from rest_framework.decorators import api_view, permission_classes
 
 class CategoryListCreateAPIView(generics.ListCreateAPIView):
     queryset = Category.objects.all()
@@ -93,6 +94,23 @@ class ArticleStatsAPIView(APIView):
             "popular_tags": popular_tags_data
         })  
 
+class ArticleReadAPIView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request, id, format=None):
+        try:
+            article = Article.objects.get(id=id)
+        except Article.DoesNotExist:
+            return Response({"error": "Article not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        article.increment_read_count()
+
+        return Response({
+            "message": "Read count incremented.",
+            "article_id": article.id,
+            "read_count": article.read_count
+        }, status=status.HTTP_200_OK)        
+
 class CategoryStatsAPIView(APIView):
     def get(self, request, id):
         try:
@@ -134,3 +152,23 @@ class UdemyCourseList(generics.ListAPIView):
     queryset = UdemyCourse.objects.all()
     serializer_class = UdemyCourseSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+
+@api_view(['POST'])
+@permission_classes([AllowAny])  # ← allow unauthenticated users
+def increment_read_count(request, pk):
+    try:
+        article = Article.objects.get(pk=pk)
+        article.read_count += 1
+        article.save()
+        return Response({'message': 'Read count incremented.'}, status=status.HTTP_200_OK)
+    except Article.DoesNotExist:
+        return Response({'error': 'Article not found.'}, status=status.HTTP_404_NOT_FOUND)  
+
+class TopReadArticlesView(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]  
+
+    def get(self, request):
+        limit = int(request.query_params.get("limit", 7))
+        articles = Article.objects.order_by("-read_count")[:limit]
+        serializer = ArticleTopReadSerializer(articles, many=True)
+        return Response(serializer.data)
