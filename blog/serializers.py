@@ -2,9 +2,10 @@ from rest_framework import serializers
 from .models import Category, Tag, Author, Article, MMPlaylist, FreeLab, Playlist, Project, UdemyCourse
 
 class CategorySerializer(serializers.ModelSerializer):
+    post_count = serializers.IntegerField(read_only=True)
     class Meta:
         model = Category
-        fields = ['id', 'name']
+        fields = ['id', 'name', 'post_count']
 
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
