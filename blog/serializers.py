@@ -67,6 +67,7 @@ class PlaylistSerializer(serializers.ModelSerializer):
             "playlist_url",
             "channel",
             "difficulty",
+            "is_burmese",
             "duration",
         ]   
 

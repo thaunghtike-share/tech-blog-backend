@@ -92,6 +92,7 @@ class Playlist(models.Model):
     title = models.CharField(max_length=255)
     video_id = models.CharField(max_length=50)  # YouTube video ID for embed
     playlist_url = models.URLField()
+    is_burmese = models.BooleanField(default=False)  # new field added
     channel = models.CharField(max_length=100, blank=True)  # Channel name
     difficulty = models.CharField(max_length=20, blank=True)  # e.g., Beginner, Intermediate
     duration = models.CharField(max_length=50, blank=True)  # Estimated duration like "3-5 weeks"
