@@ -18,12 +18,17 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-# create tag model
 class Tag(models.Model):
     name = models.CharField(max_length=100)
+    slug = models.SlugField(null=True, blank=True, unique=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.name   
+        return self.name
 
 class Author(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="author_profile")

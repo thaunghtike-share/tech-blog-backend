@@ -10,7 +10,7 @@ class CategorySerializer(serializers.ModelSerializer):
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
-        fields = ['id', 'name']
+        fields = ['id', 'slug', 'name']
 
 class MMPlaylistSerializer(serializers.ModelSerializer):
     class Meta:

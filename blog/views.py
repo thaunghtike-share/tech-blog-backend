@@ -59,7 +59,7 @@ class ArticleListCreateAPIView(generics.ListCreateAPIView):
     queryset = Article.objects.all().order_by('-published_at')
     serializer_class = ArticleSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter]
-    filterset_fields = ['category', 'category__slug', 'author', 'tags', 'featured']  # ✅ Add this
+    filterset_fields = ['category', 'category__slug', 'author', 'tags', 'tags__slug', 'featured']  # ✅ Add this
     search_fields = ['title', 'content']
     permission_classes = [IsAuthenticatedOrReadOnly]  # ✅ Require login
 
