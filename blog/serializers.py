@@ -50,7 +50,7 @@ class ArticleTopReadSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Article
-        fields = ["id", "title", "published_at", "author_name", "read_count"]        
+        fields = ["id", "slug", "title", "published_at", "author_name", "read_count"]        
 
 class FreeLabSerializer(serializers.ModelSerializer):
     class Meta:
