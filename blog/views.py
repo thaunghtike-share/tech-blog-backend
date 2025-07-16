@@ -22,7 +22,7 @@ class CategoryRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = [permissions.AllowAny]
-    lookup_field = 'id'
+    lookup_field = 'slug'
 
 class TagListCreateAPIView(generics.ListCreateAPIView):
     queryset = Tag.objects.all()
@@ -75,7 +75,7 @@ class ArticleRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView)
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
     permission_classes = [permissions.AllowAny]
-    lookup_field = 'id'
+    lookup_field = 'slug' 
 
 class ArticleStatsAPIView(APIView):
     permission_classes = [permissions.AllowAny]

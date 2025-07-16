@@ -5,7 +5,7 @@ class CategorySerializer(serializers.ModelSerializer):
     post_count = serializers.IntegerField(read_only=True)
     class Meta:
         model = Category
-        fields = ['id', 'name', 'post_count']
+        fields = ['id', 'name', 'slug', 'post_count']
 
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
@@ -40,7 +40,8 @@ class ArticleSerializer(serializers.ModelSerializer):
             'tags',      # Accepts list of tag IDs
             'author',    # Read-only if you want
             'featured',
-            'read_count'
+            'read_count',
+            'slug'
         ]
         read_only_fields = ['author']
 

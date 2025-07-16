@@ -1,11 +1,19 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.utils.text import slugify
 
 User = get_user_model()
 
 # create category model
 class Category(models.Model):   
     name = models.CharField(max_length=100)
+    slug = models.SlugField(null=True, blank=True, unique=True)
+
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
@@ -38,8 +46,21 @@ class Article(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     tags = models.ManyToManyField(Tag, blank=True)
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    slug = models.SlugField(null=True, blank=True, unique=True)
 
     read_count = models.PositiveIntegerField(default=0)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base_slug = slugify(self.title)
+            existing_slugs = Article.objects.values_list("slug", flat=True)
+            slug = base_slug
+            counter = 1
+            while slug in existing_slugs:
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+            self.slug = slug
+        super().save(*args, **kwargs)
 
     def increment_read_count(self):
         self.read_count += 1
