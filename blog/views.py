@@ -175,7 +175,7 @@ class TopReadArticlesView(APIView):
 
 class TestimonialListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = TestimonialSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [AllowAny]  # ✅ Allow both GET and POST without auth
 
     def get_queryset(self):
         # Return only positive feedback
