@@ -1,7 +1,7 @@
 from rest_framework import generics, permissions, status
 from rest_framework.filters import SearchFilter
-from .models import Category, Tag, Author, Article, MMPlaylist, FreeLab, Playlist, Project, UdemyCourse
-from .serializers import CategorySerializer, TagSerializer, AuthorSerializer, ArticleSerializer, MMPlaylistSerializer, ArticleTopReadSerializer, FreeLabSerializer, PlaylistSerializer, ProjectSerializer, UdemyCourseSerializer
+from .models import Category, Tag, Author, Article, MMPlaylist, FreeLab, Playlist, Project, UdemyCourse, Testimonial
+from .serializers import CategorySerializer, TagSerializer, AuthorSerializer, TestimonialSerializer, ArticleSerializer, MMPlaylistSerializer, ArticleTopReadSerializer, FreeLabSerializer, PlaylistSerializer, ProjectSerializer, UdemyCourseSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.views import APIView
 from django.db.models import Count
@@ -172,3 +172,11 @@ class TopReadArticlesView(APIView):
         articles = Article.objects.order_by("-read_count")[:limit]
         serializer = ArticleTopReadSerializer(articles, many=True)
         return Response(serializer.data)
+
+class TestimonialListCreateAPIView(generics.ListCreateAPIView):
+    serializer_class = TestimonialSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self):
+        # Return only positive feedback
+        return Testimonial.objects.filter(rating__gte=4).order_by('-created_at')

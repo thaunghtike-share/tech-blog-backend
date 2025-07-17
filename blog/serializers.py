@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, Tag, Author, Article, MMPlaylist, FreeLab, Playlist, Project, UdemyCourse
+from .models import Category, Tag, Author, Article, MMPlaylist, FreeLab, Playlist, Project, UdemyCourse, Testimonial
 
 class CategorySerializer(serializers.ModelSerializer):
     post_count = serializers.IntegerField(read_only=True)
@@ -16,6 +16,14 @@ class MMPlaylistSerializer(serializers.ModelSerializer):
     class Meta:
         model = MMPlaylist
         fields = '__all__'
+
+from .models import Testimonial
+
+class TestimonialSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Testimonial
+        fields = ['id', 'name', 'role', 'feedback', 'rating', 'created_at']
+        read_only_fields = ['id', 'created_at']
 
 class AuthorSerializer(serializers.ModelSerializer):
     class Meta:

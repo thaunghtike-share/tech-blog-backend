@@ -30,4 +30,6 @@ urlpatterns = [
 
     path('articles/<slug:slug>/', ArticleRetrieveUpdateDestroyAPIView.as_view(), name='article-detail'),
     path('categories/<slug:slug>/', CategoryRetrieveUpdateDestroyAPIView.as_view(), name='category-detail'),
+
+    path('testimonials/', TestimonialListCreateAPIView.as_view(), name='testimonial-list-create'),
 ]

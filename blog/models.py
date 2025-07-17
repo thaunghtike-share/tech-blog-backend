@@ -4,6 +4,17 @@ from django.utils.text import slugify
 
 User = get_user_model()
 
+class Testimonial(models.Model):
+    name = models.CharField(max_length=100)
+    role = models.CharField(max_length=150)
+    feedback = models.TextField()
+    rating = models.PositiveSmallIntegerField(default=5)  # 1 to 5 stars
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.name} - {self.role}"
+
+
 # create category model
 class Category(models.Model):   
     name = models.CharField(max_length=100)
