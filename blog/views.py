@@ -13,7 +13,7 @@ from rest_framework.decorators import api_view, permission_classes
 class CategoryListCreateAPIView(generics.ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = [permissions.AllowAny] 
+    permission_classes = [IsAuthenticatedOrReadOnly] 
 
     def get_queryset(self):
         return Category.objects.annotate(post_count=Count('article'))
@@ -21,18 +21,18 @@ class CategoryListCreateAPIView(generics.ListCreateAPIView):
 class CategoryRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     lookup_field = 'slug'
 
 class TagListCreateAPIView(generics.ListCreateAPIView):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 class TagRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     lookup_field = 'id'
 
 class AuthorListCreateAPIView(generics.ListCreateAPIView):
@@ -52,7 +52,7 @@ class AuthorListCreateAPIView(generics.ListCreateAPIView):
 class AuthorRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     lookup_field = 'id'
 
 class ArticleListCreateAPIView(generics.ListCreateAPIView):
@@ -74,11 +74,11 @@ class ArticleListCreateAPIView(generics.ListCreateAPIView):
 class ArticleRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     lookup_field = 'slug' 
 
 class ArticleStatsAPIView(APIView):
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get(self, request, format=None):
         total_articles = Article.objects.count()
@@ -95,7 +95,7 @@ class ArticleStatsAPIView(APIView):
         })  
 
 class ArticleReadAPIView(APIView):
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def post(self, request, id, format=None):
         try:
@@ -175,7 +175,7 @@ class TopReadArticlesView(APIView):
 
 class TestimonialListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = TestimonialSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
         # Return only positive feedback
