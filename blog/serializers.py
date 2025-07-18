@@ -1,5 +1,8 @@
 from rest_framework import serializers
-from .models import Category, Tag, Author, Article, MMPlaylist, FreeLab, Playlist, Project, UdemyCourse, Testimonial
+from .models import (
+    Category, Tag, Author, Article, MMPlaylist, FreeLab,
+    Playlist, Project, UdemyCourse, Testimonial
+)
 
 class CategorySerializer(serializers.ModelSerializer):
     post_count = serializers.IntegerField(read_only=True)
@@ -17,8 +20,6 @@ class MMPlaylistSerializer(serializers.ModelSerializer):
         model = MMPlaylist
         fields = '__all__'
 
-from .models import Testimonial
-
 class TestimonialSerializer(serializers.ModelSerializer):
     class Meta:
         model = Testimonial
@@ -29,15 +30,8 @@ class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Author
         fields = [
-            'id',
-            'name',
-            'bio',
-            'avatar',
-            'featured',
-            'slug',
-            'job_title',
-            'company',
-            'linkedin'  # New field for LinkedIn URL
+            'id', 'name', 'bio', 'avatar', 'featured', 'slug',
+            'job_title', 'company', 'linkedin'
         ]
 
 class ArticleSerializer(serializers.ModelSerializer):
@@ -45,12 +39,8 @@ class ArticleSerializer(serializers.ModelSerializer):
         model = Article
         fields = [
             'id', 'title', 'content', 'published_at',
-            'category',  # Accepts category ID
-            'tags',      # Accepts list of tag IDs
-            'author',    # Read-only if you want
-            'featured',
-            'read_count',
-            'slug'
+            'category', 'tags', 'author', 'featured',
+            'read_count', 'slug'
         ]
         read_only_fields = ['author']
 
@@ -59,39 +49,30 @@ class ArticleTopReadSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Article
-        fields = ["id", "slug", "title", "published_at", "author_name", "read_count"]        
-
-class FreeLabSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = FreeLab
-        fields = '__all__'      
-
-class PlaylistSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Playlist
         fields = [
-            "id",
-            "title",
-            "video_id",
-            "playlist_url",
-            "channel",
-            "difficulty",
-            "is_burmese",
-            "duration",
-        ]   
+            "id", "slug", "title", "published_at",
+            "author_name", "read_count"
+        ]
 
-class ProjectSerializer(serializers.ModelSerializer):
+class ArticleExcerptSerializer(serializers.ModelSerializer):
+    author_name = serializers.CharField(source="author.name", default="Unknown", read_only=True)
+    excerpt = serializers.SerializerMethodField()
+
     class Meta:
-        model = Project
-        fields = ['id', 'name', 'description', 'url', 'tags']     
+        model = Article
+        fields = [
+            "id", "slug", "title", "published_at",
+            "author_name", "read_count", "excerpt"
+        ]
 
-class UdemyCourseSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = UdemyCourse
-        fields = ['id', 'title', 'description', 'url', 'author', 'author_image', 'rating']    
+    def get_excerpt(self, obj):
+        raw = obj.content or ""
+        excerpt = raw[:250] + "..." if len(raw) > 250 else raw
+        return excerpt
 
-class AuthorWithArticlesSerializer(serializers.ModelSerializer):
-    articles = ArticleTopReadSerializer(source='article_set', many=True)  # article_set is reverse FK from Article
+# Distinct serializer class names for clarity and to avoid import errors
+class AuthorWithArticlesExcerptSerializer(serializers.ModelSerializer):
+    articles = ArticleExcerptSerializer(source='article_set', many=True)
 
     class Meta:
         model = Author
@@ -99,4 +80,38 @@ class AuthorWithArticlesSerializer(serializers.ModelSerializer):
             'id', 'name', 'slug', 'bio', 'avatar',
             'job_title', 'company', 'linkedin', 'featured',
             'articles'
-        ]      
+        ]
+
+class AuthorWithArticlesTopReadSerializer(serializers.ModelSerializer):
+    articles = ArticleTopReadSerializer(source='article_set', many=True)
+
+    class Meta:
+        model = Author
+        fields = [
+            'id', 'name', 'slug', 'bio', 'avatar',
+            'job_title', 'company', 'linkedin', 'featured',
+            'articles'
+        ]
+
+class FreeLabSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FreeLab
+        fields = '__all__'
+
+class PlaylistSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Playlist
+        fields = [
+            "id", "title", "video_id", "playlist_url",
+            "channel", "difficulty", "is_burmese", "duration",
+        ]
+
+class ProjectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Project
+        fields = ['id', 'name', 'description', 'url', 'tags']
+
+class UdemyCourseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UdemyCourse
+        fields = ['id', 'title', 'description', 'url', 'author', 'author_image', 'rating']

@@ -1,7 +1,21 @@
 from rest_framework import generics, permissions, status
 from rest_framework.filters import SearchFilter
 from .models import Category, Tag, Author, Article, MMPlaylist, FreeLab, Playlist, Project, UdemyCourse, Testimonial
-from .serializers import CategorySerializer, AuthorWithArticlesSerializer, TagSerializer, AuthorSerializer, TestimonialSerializer, ArticleSerializer, MMPlaylistSerializer, ArticleTopReadSerializer, FreeLabSerializer, PlaylistSerializer, ProjectSerializer, UdemyCourseSerializer
+from .serializers import (
+    CategorySerializer,
+    ArticleExcerptSerializer,
+    AuthorWithArticlesExcerptSerializer,  # or AuthorWithArticlesTopReadSerializer
+    TagSerializer,
+    AuthorSerializer,
+    TestimonialSerializer,
+    ArticleSerializer,
+    MMPlaylistSerializer,
+    ArticleTopReadSerializer,
+    FreeLabSerializer,
+    PlaylistSerializer,
+    ProjectSerializer,
+    UdemyCourseSerializer,
+)
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.views import APIView
 from django.db.models import Count
@@ -11,10 +25,12 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny
 from rest_framework.decorators import api_view, permission_classes
 
 class AuthorWithArticlesAPIView(generics.RetrieveAPIView):
-    queryset = Author.objects.all()
-    serializer_class = AuthorWithArticlesSerializer
+    serializer_class = AuthorWithArticlesExcerptSerializer  # or AuthorWithArticlesTopReadSerializer
     permission_classes = [AllowAny]
     lookup_field = 'slug'
+
+    def get_queryset(self):
+        return Author.objects.prefetch_related('article_set')
 
 class CategoryListCreateAPIView(generics.ListCreateAPIView):
     queryset = Category.objects.all()
