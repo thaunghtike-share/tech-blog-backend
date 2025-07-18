@@ -12,6 +12,7 @@ urlpatterns = [
 
     path('authors/', AuthorListCreateAPIView.as_view(), name='author-list-create'),
     path('authors/<int:id>/', AuthorRetrieveUpdateDestroyAPIView.as_view(), name='author-detail'),
+    path('authors/<slug:slug>/details/', AuthorWithArticlesAPIView.as_view(), name='author-full'),
 
     path('articles/', ArticleListCreateAPIView.as_view(), name='article-create'),
     path('articles/stats/', ArticleStatsAPIView.as_view(), name='article-stats'),

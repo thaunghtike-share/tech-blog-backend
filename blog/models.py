@@ -46,10 +46,16 @@ class Author(models.Model):
     name = models.CharField(max_length=100)
     bio = models.TextField(blank=True)
     avatar = models.URLField(blank=True)
+    slug = models.SlugField(unique=True, blank=True, null=True)
     featured = models.BooleanField(default=False)
     job_title = models.CharField(max_length=100, blank=True)
     company = models.CharField(max_length=100, blank=True)
     linkedin = models.URLField(blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name

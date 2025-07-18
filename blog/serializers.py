@@ -34,6 +34,7 @@ class AuthorSerializer(serializers.ModelSerializer):
             'bio',
             'avatar',
             'featured',
+            'slug',
             'job_title',
             'company',
             'linkedin'  # New field for LinkedIn URL
@@ -87,4 +88,15 @@ class ProjectSerializer(serializers.ModelSerializer):
 class UdemyCourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = UdemyCourse
-        fields = ['id', 'title', 'description', 'url', 'author', 'author_image', 'rating']          
+        fields = ['id', 'title', 'description', 'url', 'author', 'author_image', 'rating']    
+
+class AuthorWithArticlesSerializer(serializers.ModelSerializer):
+    articles = ArticleTopReadSerializer(source='article_set', many=True)  # article_set is reverse FK from Article
+
+    class Meta:
+        model = Author
+        fields = [
+            'id', 'name', 'slug', 'bio', 'avatar',
+            'job_title', 'company', 'linkedin', 'featured',
+            'articles'
+        ]      
