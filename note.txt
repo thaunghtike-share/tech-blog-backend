@@ -1,0 +1,19 @@
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo update
+
+helm install mysql bitnami/mysql -n learndevopsnow --create-namespace \
+  --set auth.rootPassword=admin123 \
+  --set auth.database=mydb \
+  --set service.type=LoadBalancer
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'mydb',
+        'USER': 'root',
+        'PASSWORD': 'admin123',
+        'HOST': '20.247.141.89',
+        'PORT': '3306',
+    }
+}
+

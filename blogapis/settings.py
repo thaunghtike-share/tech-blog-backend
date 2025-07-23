@@ -92,8 +92,12 @@ WSGI_APPLICATION = 'blogapis.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'mydb',
+        'USER': 'root',
+        'PASSWORD': 'admin123',
+        'HOST': '20.247.141.89',
+        'PORT': '3306',
     }
 }
 
